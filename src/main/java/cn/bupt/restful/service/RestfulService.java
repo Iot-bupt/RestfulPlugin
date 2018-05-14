@@ -1,13 +1,14 @@
 package cn.bupt.restful.service;
 
 import cn.bupt.restful.data.RequestMsg;
+import cn.bupt.restful.data.State;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
 @Service
-public class RestfulService {
+public class RestfulService extends State{
 
     public String sendHTTPRequest(RequestMsg msg) throws IOException {
         String response = null;
