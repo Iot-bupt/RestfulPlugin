@@ -1,7 +1,9 @@
 package cn.bupt.restful.controller;
 
 import cn.bupt.restful.data.RequestMsg;
+import cn.bupt.restful.pluginmanager.Plugin;
 import cn.bupt.restful.service.RestfulService;
+import cn.bupt.restful.service.Timer;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.swagger.annotations.ApiImplicitParam;
@@ -10,13 +12,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.*;
-import cn.bupt.restful.service.Timer;
 
 import java.io.IOException;
 import java.util.concurrent.Future;
 
 @RestController("RestfulPluginController")
 @RequestMapping("/api/restful")
+@Plugin(pluginInfo = "RestfulPlugin", registerAddr = "10.108.218.108:2181", detailInfo = "10.108.218.108:8400|use for sending HTTP Request")
 @Slf4j
 public class RestfulPluginController {
 
