@@ -4,6 +4,7 @@ import cn.bupt.restful.data.RequestMsg;
 import cn.bupt.restful.pluginmanager.Plugin;
 import cn.bupt.restful.service.RestfulService;
 import cn.bupt.restful.service.Timer;
+import com.codahale.metrics.Counter;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.swagger.annotations.ApiImplicitParam;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.concurrent.Future;
 
@@ -24,6 +26,9 @@ public class RestfulPluginController {
 
     @Autowired
     RestfulService restfulService;
+
+    @Resource
+    private Counter pendingJobs;
 
     @Timer
     @ApiOperation(value = "send a request", notes = "send a request api")
@@ -37,6 +42,8 @@ public class RestfulPluginController {
     public Future<String> sendRestfulRequest(@RequestBody String jsonStr) throws IOException {
         JsonObject jsonObj = (JsonObject)new JsonParser().parse(jsonStr);
         RequestMsg requestMsg = new RequestMsg(jsonObj);
+
+        pendingJobs.inc();
 
         String s = restfulService.sendHTTPRequest(requestMsg);
         return new AsyncResult<String>(s);

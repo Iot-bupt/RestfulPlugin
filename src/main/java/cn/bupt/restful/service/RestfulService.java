@@ -2,30 +2,39 @@ package cn.bupt.restful.service;
 
 import cn.bupt.restful.data.RequestMsg;
 import cn.bupt.restful.data.State;
+import com.codahale.metrics.Timer;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 
 @Service
 public class RestfulService extends State{
+    @Resource
+    private Timer responses;
 
     public String sendHTTPRequest(RequestMsg msg) throws IOException {
-        String response = null;
+        final Timer.Context context = responses.time();
+        try {
+            String response = null;
 
-        switch(msg.getMethod()){
-            case "GET":
-                response = sendGETRequest(msg);
-                break;
-            case "POST":
-                response = sendPOSTRequest(msg);
-                break;
-            case "DELETE":
-                response = sendDELETERequest(msg);
-                break;
+            switch (msg.getMethod()) {
+                case "GET":
+                    response = sendGETRequest(msg);
+                    break;
+                case "POST":
+                    response = sendPOSTRequest(msg);
+                    break;
+                case "DELETE":
+                    response = sendDELETERequest(msg);
+                    break;
+            }
+
+            return  response;
+        }finally{
+            context.stop();
         }
-
-        return  response;
     }
 
 
