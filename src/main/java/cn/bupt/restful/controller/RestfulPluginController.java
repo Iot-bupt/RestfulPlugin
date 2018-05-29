@@ -19,8 +19,8 @@ import java.io.IOException;
 import java.util.concurrent.Future;
 
 @RestController("RestfulPluginController")
-@RequestMapping("/api/restful")
-@Plugin(pluginInfo = "RestfulPlugin", registerAddr = "10.108.218.108:2181", detailInfo = "10.108.218.108:8400|use for sending HTTP Request")
+@RequestMapping("/api/plugin")
+@Plugin(pluginInfo = "RestfulPlugin", registerAddr = "172.30.26.7:2181,172.30.24.9:2181,172.30.26.10:2181", detailInfo = "use for sending HTTP Request")
 @Slf4j
 public class RestfulPluginController {
 
